@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Dashboard</h2>
+
+<div class="row">
+
+    <div class="col-md-4">
+        <div class="card bg-primary text-white p-3">
+            <h5>Total Tasks</h5>
+            <h2>{{ tasks.count }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card bg-success text-white p-3">
+            <h5>Completed</h5>
+            <h2>{{ completed }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card bg-danger text-white p-3">
+            <h5>Overdue</h5>
+            <h2>{{ overdue }}</h2>
+        </div>
+    </div>
+
+</div>
+
+<hr>
+
+<a href="/project/create/" class="btn btn-success">
+    Create Project
+</a>
+
+<a href="/task/create/" class="btn btn-primary">
+    Create Task
+</a>
+
+<hr>
+
+<table class="table table-bordered">
+
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Due Date</th>
+            <th>Update</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        {% for task in tasks %}
+
+        <tr>
+
+            <td>{{ task.title }}</td>
+
+            <td>{{ task.status }}</td>
+
+            <td>{{ task.due_date }}</td>
+
+            <td>
+
+                <form method="POST"
+                      action="/task/update/{{ task.id }}/">
+
+                    {% csrf_token %}
+
+                    <select name="status">
+
+                        <option value="todo">
+                            To Do
+                        </option>
+
+                        <option value="in_progress">
+                            In Progress
+                        </option>
+
+                        <option value="done">
+                            Done
+                        </option>
+
+                    </select>
+
+                    <button class="btn btn-sm btn-primary">
+                        Update
+                    </button>
+
+                </form>
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </tbody>
+
+</table>
+
+{% endblock %}
